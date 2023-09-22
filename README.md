@@ -85,11 +85,11 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node
 
 For visualization, please set `_C.test.vis` to 'True'. You will get: original nodes with learned offsets, final superpoints, grouped points using orignial nodes, grouped points using detected superpoints, and detected correspondences in order.
 
-![vis](/home/chenghao/DL_workspace/My_repo/RDMNet_opensouce/assets/vis.png)
+![vis](./assets/vis.png)
 
 Zooming in the grouped points, you will find that using the detected superpoints leads to the points of a single object are more easily to be grouped as a whole. See following demonstrations for closer examination.  Feel free to try you interested scans! 
 
-![vote_vis](/home/chenghao/DL_workspace/My_repo/RDMNet_opensouce/assets/vote_vis.png)
+![vote_vis](./assets/vote_vis.png)
 
 
 
