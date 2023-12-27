@@ -76,7 +76,7 @@ python experiments/trainval.py
 Using following command for multi-gpu training:
 
 ```
-CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 trainval.py
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 experiments/trainval.py
 ```
 
 
