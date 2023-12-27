@@ -19,7 +19,7 @@ def load_kitti_gt_txt(txt_root, seq):
     :param txt_root:
     :param seq
     :return: [{anc_idx: *, pos_idx: *, seq: *}]                
-     '''
+    '''
     dataset = []
 
     with open(osp.join(txt_root, '%02d'%seq), 'r') as f:
@@ -45,13 +45,27 @@ def make_dataset_kitti(txt_path, mode):
             seq_list = [6, 7]
         elif mode == 'test':
             seq_list = [8,9,10]
+        elif mode == 'infer':
+            seq_list = [0]
         else:
             raise Exception('Invalid mode.')
 
+
         dataset = []
-        for seq in seq_list:
-            dataset += (load_kitti_gt_txt(txt_path, seq))
-           
+
+        if mode == 'infer':
+            datasets = []
+            data = {'seq_id': 0, 'frame0':  0, 'frame1': 4}
+            data2 = {'seq_id': 0, 'frame0':  0, 'frame1': 7}
+            # data = {'seq': seq, 'anc_idx': anc_idx, 'pos_idx': pos_idx}
+            dataset.append(data)
+            dataset.append(data2)
+            datasets += [dataset]
+            datasets = np.concatenate(datasets)
+        else:
+            for seq in seq_list:
+                dataset += (load_kitti_gt_txt(txt_path, seq))
+
         return dataset
 
 class OdometryKittiPairDataset(torch.utils.data.Dataset):
@@ -136,9 +150,19 @@ class OdometryKittiPairDataset(torch.utils.data.Dataset):
         data_dict['ref_frame'] = metadata['frame0']
         data_dict['src_frame'] = metadata['frame1']
 
-        ref_points = self._load_point_cloud(osp.join(self.dataset_root, 'downsampled_xyzi','%02d'%data_dict['seq_id'], '%06d.npy' % (data_dict['ref_frame'])))[:,:3]
-        src_points = self._load_point_cloud(osp.join(self.dataset_root, 'downsampled_xyzi','%02d'%data_dict['seq_id'], '%06d.npy' % (data_dict['src_frame'])))[:,:3]
-        transform = metadata['transform']
+
+        ref_points = self._load_point_cloud(osp.join('./assets/pc', '%06d.npy' % (data_dict['ref_frame'])))[:,:3]
+        src_points = self._load_point_cloud(osp.join('./assets/pc', '%06d.npy' % (data_dict['src_frame'])))[:,:3]
+        
+
+        
+        if self.subset != 'infer':
+            data_dict['transform'] = transform.astype(np.float32)
+            transform = metadata['transform']
+            data_dict['transform'] = transform.astype(np.float32)
+            ref_points = self._load_point_cloud(osp.join(self.dataset_root, 'downsampled_xyzi','%02d'%data_dict['seq_id'], '%06d.npy' % (data_dict['ref_frame'])))[:,:3]
+            src_points = self._load_point_cloud(osp.join(self.dataset_root, 'downsampled_xyzi','%02d'%data_dict['seq_id'], '%06d.npy' % (data_dict['src_frame'])))[:,:3]
+        
 
         # for visualization
         # ref_frame = osp.join('/mnt/Mount/Dataset/KITTI_odometry/sequences','%02d'%data_dict['seq_id'], 'velodyne/%06d.bin' % (data_dict['ref_frame']))
@@ -163,7 +187,6 @@ class OdometryKittiPairDataset(torch.utils.data.Dataset):
         data_dict['src_points'] = src_points.astype(np.float32)
         data_dict['ref_feats'] = np.ones((ref_points.shape[0], 1), dtype=np.float32)
         data_dict['src_feats'] = np.ones((src_points.shape[0], 1), dtype=np.float32)
-        data_dict['transform'] = transform.astype(np.float32)
 
         return data_dict
 

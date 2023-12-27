@@ -19,7 +19,11 @@ The code has been tested with Ubuntu 20.04, torch 1.8.0, cuda 11.4, and python 3
 
 ## Quick demo
 
-Coming soon. 
+```
+python infer.py
+```
+
+This script returns correspondences between two scans and calculates relative pose.
 
 
 
@@ -133,6 +137,6 @@ All results are evaluated using the same model trained on KITTI. Mulran poses si
 
 ## @todo
 
-- [ ] Add quick demo.
+- [x] Add quick demo.
 - [ ] Current codes have supported Mulran, KITTI360, and Apollo. Add tips for these datasets.
 

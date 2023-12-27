@@ -117,6 +117,33 @@ def test_loop_closure_data_loader(cfg, distributed, dataset):
 
     return test_loader, neighbor_limits
 
+def infer_data_loader(cfg, distributed, dataset):
+    dataset_init = registration_dataset_initialization()
+    infer_dataset = getattr(dataset_init, '%s_dataset_initialization' % dataset)(
+                cfg, dataset, 'infer'
+            )
+    neighbor_limits = calibrate_neighbors_stack_mode(
+        infer_dataset,
+        registration_collate_fn_stack_mode,
+        cfg.backbone.num_stages,
+        cfg.backbone.init_voxel_size,
+        cfg.backbone.init_radius,
+    )
+
+    infer_loader = build_dataloader_stack_mode(
+        infer_dataset,
+        registration_collate_fn_stack_mode,
+        cfg.backbone.num_stages,
+        cfg.backbone.init_voxel_size,
+        cfg.backbone.init_radius,
+        neighbor_limits,
+        batch_size=cfg.test.batch_size,
+        num_workers=cfg.test.num_workers,
+        shuffle=False,
+        distributed=distributed,
+    )
+
+    return infer_loader, neighbor_limits
 
 class registration_dataset_initialization:
     def __init__(self):

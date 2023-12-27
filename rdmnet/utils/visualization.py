@@ -138,7 +138,7 @@ def draw_point_correspondences(
 
 def visualization(
     output_dict,
-    transform,
+    transform = None,
     # src_points=None,
     # ref_points=None,
     src_node_knn_indices=None,
@@ -173,7 +173,7 @@ def visualization(
     src_points=(output_dict['src_points_f'])
 
     # corr_scores=(output_dict['corr_scores'])
-    gt_node_corr_indices=(output_dict['gt_node_corr_indices'])
+    # gt_node_corr_indices=(output_dict['gt_node_corr_indices'])
     # gt_node_corr_overlaps=(output_dict['gt_node_corr_overlaps'])
     # estimated_transform=(output_dict['estimated_transform'])
 
@@ -193,7 +193,6 @@ def visualization(
         ref_points = torch.tensor(ref_points)
         src_points = torch.tensor(src_points)
         src_node = torch.tensor(src_node)
-        transform = torch.tensor(transform)
         ref_corr_points = torch.tensor(ref_corr_points)
         src_corr_points = torch.tensor(src_corr_points)
 
@@ -205,7 +204,8 @@ def visualization(
 
 
     #### vis point corr
-    if find_true:
+    if find_true and transform is not None:
+        transform = torch.tensor(transform)
         true_mask = find_true_false(src_corr_points,ref_corr_points, transform)
     else:
         true_mask = None
