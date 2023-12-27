@@ -70,7 +70,7 @@ In `preprocess/generate_kitti_pairs.py`, we follow [FCGF](https://github.com/chr
 ## Training
 
 ```
-python experiments/train.py
+python experiments/trainval.py
 ```
 
 Using following command for multi-gpu training:
