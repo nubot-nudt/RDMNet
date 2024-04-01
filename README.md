@@ -1,7 +1,7 @@
 # RDMNet: Reliable Dense-point Matching for Robust and Accurate Point Cloud Registration
 Official implementation of the paper:
 
-[RDMNet: Reliable Dense-point Matching for Robust and Accurate Point Cloud Registration](https://arxiv.org/pdf/2303.18084.pdf).
+[arxiv](https://arxiv.org/pdf/2303.18084.pdf), [IEEE](https://ieeexplore.ieee.org/document/10246847)
 
 ![pipeline](./assets/pipeline.png)
 
@@ -116,7 +116,10 @@ All results are evaluated using the same model trained on KITTI. Mulran poses si
 @article{shi2023RDMNet,
   title={RDMNet: Reliable Dense Matching Based Point Cloud Registration for Autonomous Driving},
   author={Chenghao Shi and Xieyuanli Chen and Huimin Lu and Wenbang Deng and Junhao Xiao and Bin Dai},
-  journal=IEEE Trans.~on Intelligent Transportation Systems (ITS)} ,
+  journal={IEEE Trans.~on Intelligent Transportation Systems (ITS)},
+  volume={24},
+  number={10},
+  pages={11372-11383},
   year={2023}
 }
 ```
