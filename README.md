@@ -1,7 +1,6 @@
 # RDMNet: Reliable Dense-point Matching for Robust and Accurate Point Cloud Registration
-Official implementation of the paper:
+Official implementation of our TITS paper ([arxiv](https://arxiv.org/pdf/2303.18084.pdf), [IEEE](https://ieeexplore.ieee.org/document/10246847)).
 
-[arxiv](https://arxiv.org/pdf/2303.18084.pdf), [IEEE](https://ieeexplore.ieee.org/document/10246847)
 
 ![pipeline](./assets/pipeline.png)
 
