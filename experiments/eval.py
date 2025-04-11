@@ -68,6 +68,8 @@ def eval_one_epoch(args, cfg, logger):
     registration_meter.register_meter('recall')
     registration_meter.register_meter('rre')
     registration_meter.register_meter('rte')
+    registration_meter.register_meter('rre_all')
+    registration_meter.register_meter('rte_all')
     registration_meter.register_meter('x')
     registration_meter.register_meter('y')
     registration_meter.register_meter('z')
@@ -220,6 +222,9 @@ def eval_one_epoch(args, cfg, logger):
 
         rre, rte, rx, ry, rz = compute_registration_error(gt_transform, est_transform)
 
+        registration_meter.update('rre_all', rre)
+        registration_meter.update('rte_all', rte)
+        
         accepted = rre < cfg.eval.rre_threshold and rte < cfg.eval.rte_threshold
         # registration_meter.update('rre', rre)
         # registration_meter.update('rte', rte)
@@ -278,8 +283,10 @@ def eval_one_epoch(args, cfg, logger):
     # 2. print registration evaluation results
     message = '  Registration'
     message += ', RR: {:.4f}'.format(registration_meter.mean("recall"))
-    message += ', RRE: {:.3f}'.format(registration_meter.mean("rre"))
-    message += ', RTE: {:.3f}'.format(registration_meter.mean("rte"))
+    message += ', RRE (succ): {:.3f}'.format(registration_meter.mean("rre"))
+    message += ', RTE (succ): {:.3f}'.format(registration_meter.mean("rte"))
+    message += ', RRE (all): {:.3f}'.format(registration_meter.mean("rre_all"))
+    message += ', RTE (all): {:.3f}'.format(registration_meter.mean("rte_all"))
     message += ', Rx: {:.3f}'.format(registration_meter.mean("x"))
     message += ', Ry: {:.3f}'.format(registration_meter.mean("y"))
     message += ', Rz: {:.3f}'.format(registration_meter.mean("z"))
